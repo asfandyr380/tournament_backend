@@ -13,7 +13,7 @@ route.post('/', async (req, res) => {
         if (req.body.PubgUsername == "") {
             res.status(400).send('Invalid username');
         } else {
-            const saveduser = user.save();
+            const saveduser = await user.save();
             res.status(201).json(saveduser);
         }
     } catch (err) {
@@ -38,11 +38,11 @@ route.get('/:userid', async (req, res) => {
 
 // Update current username by ID
 route.patch('/updateuser/:id', async (req, res) => {
-    const id = req.params.id
+    const updateid = req.params.id
     const body = req.body
     const option = { new: true }
     try {
-        const updateduser = await pubguser.findByIdAndUpdate(id, body, option, (err) => {
+        const updateduser = await pubguser.findByIdAndUpdate(updateid, body, option, (err) => {
             res.status(400).json({ message: err.message });
         });
         res.status(201).json(updateduser.PubgUsername);
@@ -54,14 +54,12 @@ route.patch('/updateuser/:id', async (req, res) => {
 
 // Delete user by Id
 route.delete('/deleteuser/:delid', async (req, res) => {
-    const id = req.params.delid
+    const deleid = req.params.delid
     try {
-        await pubguser.findByIdAndDelete(id, (err) => {
-            res.status(400).json(err);
-        });
+        await pubguser.findByIdAndDelete(deleid);
         res.status(201).send('Successfuly Deleted user');
-    } catch (err) {
-        res.status(500).json({ message: err });
+    } catch (error) {
+        res.status(500).json({ message: error });
     }
 });
 

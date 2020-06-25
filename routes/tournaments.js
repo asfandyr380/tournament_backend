@@ -22,28 +22,37 @@ router.post('/', async (req, res) => {
     var time = req.body.time
     var roomId = req.body.roomId
     var roomPass = req.body.roomPass
+    var mapType = req.body.mapType
+    var type = req.body.type
 
     const data = new tournament({
         title: title,
         time: time,
         roomId: roomId,
         roomPass: roomPass,
-        joined: req.body.joined
+        joined: req.body.joined,
+        mapType: mapType,
+        type: type,
     });
     try {
-        if (title == "" || time == "" || roomPass == "" || roomId == "") {
+        if (title == "" ||
+            time == "" ||
+            roomPass == "" ||
+            roomId == "" ||
+            mapType == "" ||
+            type == "") {
             res.status(400).send('Something is wrong with your info');
         } else {
             const savedData = await data.save();
             res.status(201).json(savedData);
         }
 
-
-
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
 });
+
+
 
 // Update an existing tournament info
 router.patch('/updateOne/:id', async (req, res) => {
@@ -59,12 +68,14 @@ router.patch('/updateOne/:id', async (req, res) => {
     }
 });
 
+
+
 // Delete an existing tournament info
 router.delete('/deleteOne/:id', async (req, res) => {
     const id = req.params.id;
     try {
         await tournament.findByIdAndDelete(id, (err) => {
-            res.status(400).json({message: err.message});
+            res.status(400).json({ message: err.message });
         });
         res.status(201).send('Successfuly Deleted One Document');
     } catch (err) {

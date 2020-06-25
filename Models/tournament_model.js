@@ -19,6 +19,16 @@ const tournamentSchema = mongoose.Schema({
     },
     joined: {
         type: Number
+    },
+    mapType:
+    {
+        type: String,
+        require: true
+    },
+    type:
+    {
+        type: String,
+        require: true
     }
 });
 
