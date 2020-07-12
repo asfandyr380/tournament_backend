@@ -12,6 +12,7 @@ app.use(cors());
 // Routes
 const tournaments = require('./routes/tournaments');
 const pubguser = require('./routes/pubg_user');
+const adminuser = require('./routes/adminUser');
 
 
 // Connect to the Database
@@ -32,7 +33,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 // Middlewares
 app.use('/tournaments', tournaments);
 app.use('/user', pubguser);
-
+app.use('/admin', adminuser);
 
 
 app.listen(3000, () => { console.log("server is up and Running") });
