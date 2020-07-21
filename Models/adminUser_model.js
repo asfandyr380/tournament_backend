@@ -8,7 +8,11 @@ const adminSchema = new mongoose.Schema({
     password:{
         require: true,
         type: String,
-    }
+    },
+    tournaments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tournaments"
+    }]
 });
 
 module.exports = mongoose.model('admin', adminSchema);

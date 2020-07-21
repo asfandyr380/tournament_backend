@@ -3,7 +3,6 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
 const app = express();
 
 
@@ -19,18 +18,16 @@ const adminuser = require('./routes/adminUser');
 mongoose.connect(process.env.CONNECTDB, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
 }, () => {
     console.log('Database is Connected');
 });
 
 
 
-
+// Middlewares
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-
-// Middlewares
 app.use('/tournaments', tournaments);
 app.use('/user', pubguser);
 app.use('/admin', adminuser);

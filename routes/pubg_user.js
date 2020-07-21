@@ -1,69 +1,26 @@
 const express = require('express');
 const route = express.Router();
 const pubguser = require('../Models/pubg_user_model');
-
-
+const { signIn, deleteUser, update } = require('../Controller/user_Controller');
+const { check, validationResult } = require('express-validator');
 
 // Create The New User
-route.post('/', async (req, res) => {
-    const user = new pubguser({
-        PubgUsername: req.body.PubgUsername,
-    });
-    try {
-        if (req.body.PubgUsername == "") {
-            res.status(400).send('Invalid username');
-        } else {
-            const saveduser = await user.save();
-            res.status(201).json(saveduser);
+route.post('/', [
+    check('Username', 'Please Enter the Username').notEmpty()
+],
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
-// Get the Current Username
-route.get('/:userid', async (req, res) => {
-    const id = req.params.userid;
-    try {
-        const currentUser = await pubguser.findById(id,
-            (err) => {
-                res.status(400).json({ message: err.message });
-            });
-        res.status(200).json(currentUser.PubgUsername);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
+        next();
+    },
+    signIn);
 
 // Update current username by ID
-route.patch('/updateuser/:id', async (req, res) => {
-    const updateid = req.params.id
-    const body = req.body
-    const option = { new: true }
-    try {
-        const updateduser = await pubguser.findByIdAndUpdate(updateid, body, option, (err) => {
-            res.status(400).json({ message: err.message });
-        });
-        res.status(201).json(updateduser.PubgUsername);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
+route.patch('/update/:id', update);
 
 // Delete user by Id
-route.delete('/deleteuser/:delid', async (req, res) => {
-    const deleid = req.params.delid
-    try {
-        await pubguser.findByIdAndDelete(deleid);
-        res.status(201).send('Successfuly Deleted user');
-    } catch (error) {
-        res.status(500).json({ message: error });
-    }
-});
-
-
-
+route.delete('/delete/:deleteId', deleteUser);
 
 module.exports = route

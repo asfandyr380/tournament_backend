@@ -5,6 +5,10 @@ const tournamentSchema = mongoose.Schema({
         type: String,
         require: true
     },
+    date: {
+        type: String,
+        require: true
+    },
     time: {
         type: String,
         require: true
@@ -29,6 +33,10 @@ const tournamentSchema = mongoose.Schema({
     {
         type: String,
         require: true
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "admin"
     }
 });
 

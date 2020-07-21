@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const pubgUserSchema = mongoose.Schema({
 
-    PubgUsername:{
+    Username:{
         require: true,
         type: String
     },
@@ -13,4 +13,4 @@ const pubgUserSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Pubgusername', pubgUserSchema);
+module.exports = mongoose.model('User', pubgUserSchema);
