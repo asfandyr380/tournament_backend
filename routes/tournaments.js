@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { create, getAll, updateOne, deleteOne } = require('../Controller/tournamet_Controller');
+const { create, getAll, updateOne, deleteOne, addJoinedUser, findJoinedUsers} = require('../Controller/tournamet_Controller');
 const { check, validationResult } = require('express-validator');
 
 // Get all the tournaments info
@@ -24,6 +24,12 @@ router.post('/', [
         next();
     },
     create);
+
+// Update the JoinedUser Array
+router.post('/updatejoin/:id', addJoinedUser);
+
+// get all Joined users
+router.get('/joined/:id', findJoinedUsers);
 
 // Update an existing tournament info
 router.patch('/update/:id', updateOne);

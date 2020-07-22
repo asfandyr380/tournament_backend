@@ -1,4 +1,6 @@
 const tournament = require('../Models/tournament_model');
+const adminModel = require('../Models/adminUser_model');
+const { body } = require('express-validator');
 
 exports.create = async (req, res) => {
 
@@ -11,6 +13,8 @@ exports.create = async (req, res) => {
         joined: req.body.joined,
         mapType: req.body.mapType,
         type: req.body.type,
+        createdBy: req.body.createdBy,
+        joinedUsers: req.body.joinedUsers
     });
     try {
         const savedData = await data.save();
@@ -18,6 +22,23 @@ exports.create = async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
+}
+
+
+exports.addJoinedUser = async (req, res) => {
+    const id = req.params.id;
+    var body = req.body.joinedUsers;
+     await tournament.findOneAndUpdate(
+        {_id: id},
+        {$addToSet: {joinedUsers: body}},
+    );
+    res.status(201).send("Successfully Joined");
+}
+
+exports.findJoinedUsers = async (req, res) => 
+{   const id = req.params.id;
+    const allusers = await tournament.find({_id: id}).populate("joinedUsers");
+    res.json(allusers);
 }
 
 exports.getAll = async (req, res) => {
@@ -31,8 +52,7 @@ exports.getAll = async (req, res) => {
     }
 }
 
-exports.updateOne = async (req, res) =>
-{
+exports.updateOne = async (req, res) => {
     const id = req.params.id;
     const body = req.body;
     const option = { new: true };
@@ -45,8 +65,7 @@ exports.updateOne = async (req, res) =>
     }
 }
 
-exports.deleteOne = async (req, res) =>
-{
+exports.deleteOne = async (req, res) => {
     const id = req.params.id;
     try {
         await tournament.findByIdAndDelete(id);

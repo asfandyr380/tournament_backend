@@ -1,4 +1,4 @@
-const mongoose  = require('mongoose');
+const mongoose = require('mongoose');
 
 const tournamentSchema = mongoose.Schema({
     title: {
@@ -37,7 +37,11 @@ const tournamentSchema = mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "admin"
-    }
+    },
+    joinedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+    }]
 });
 
 module.exports = mongoose.model('tournament', tournamentSchema);

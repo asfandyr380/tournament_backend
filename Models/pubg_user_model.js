@@ -13,4 +13,4 @@ const pubgUserSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('User', pubgUserSchema);
+module.exports = mongoose.model('user', pubgUserSchema);

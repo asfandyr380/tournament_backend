@@ -10,7 +10,7 @@ exports.signIn = async (req,res) =>
         Username: req.body.Username
     });
     try{
-        const savedUser = newUser.save();
+        const savedUser = await newUser.save();
         res.status(201).json(savedUser);
     }catch(err)
     {
