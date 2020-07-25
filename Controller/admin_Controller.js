@@ -11,7 +11,8 @@ exports.signIn = async (req, res) =>
     const validatePass = await bcrypt.compare(req.body.password, userRegistered.password);
     if(!validatePass) return res.status(400).send("Not a Valid Password");
 
-    res.status(200).send("LogIn Success");
+    const user = await adminUser.findOne({username: req.body.username});
+    res.status(200).send(user);
 }
 
 exports.register = async (req, res) =>
