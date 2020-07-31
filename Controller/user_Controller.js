@@ -4,7 +4,7 @@ exports.signIn = async (req,res) =>
 {   
     // Check if Username already Exists in the database
     const checkusername = await user.findOne({Username: req.body.Username});
-    if(checkusername) return res.status(200).send("User already Exists Just LogIn");
+    if(checkusername) return res.status(200).json(checkusername);
 
     const newUser = new user({
         Username: req.body.Username

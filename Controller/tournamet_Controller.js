@@ -37,8 +37,10 @@ exports.addJoinedUser = async (req, res) => {
 
 exports.findJoinedUsers = async (req, res) => 
 {   const id = req.params.id;
-    const allusers = await tournament.find({_id: id}).populate("joinedUsers");
-    res.json(allusers);
+    await tournament.findOne({_id: id}, (err, users) => {
+        if(err) return console.log(err);
+        res.status(200).json(users.joinedUsers);
+    }).populate('joinedUsers');
 }
 
 exports.getAll = async (req, res) => {
@@ -71,6 +73,6 @@ exports.deleteOne = async (req, res) => {
         await tournament.findByIdAndDelete(id);
         res.status(201).send('Successfuly Deleted One Document');
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 }
